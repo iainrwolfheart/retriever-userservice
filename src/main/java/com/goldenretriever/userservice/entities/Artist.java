@@ -15,4 +15,13 @@ public class Artist extends User {
 
     private String artistName;
     private String _caseId;
+
+//    @Builder
+    public Artist(String username, String email, String password,
+                  String artistName, String _caseId) {
+        super(username, email, password);
+        this.artistName = artistName;
+        this._caseId = _caseId;
+    }
+
 }

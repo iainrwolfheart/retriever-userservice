@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/users")
-public class UserController {
+public class UserController<T extends User> {
 
     @Autowired
     private UserService userService;
@@ -19,8 +19,8 @@ public class UserController {
 
 //    POST createUser
     @PostMapping("/create")
-    public User createUser(@RequestBody User user) {
-        return userService.saveNewUser(user);
+    public T createUser(@RequestBody T user) {
+        return (T) userService.saveNewUser(user);
     }
 
 //    UPDATE user
