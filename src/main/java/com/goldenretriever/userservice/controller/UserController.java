@@ -1,5 +1,7 @@
 package com.goldenretriever.userservice.controller;
 
+import com.goldenretriever.userservice.entities.Artist;
+import com.goldenretriever.userservice.entities.Retriever;
 import com.goldenretriever.userservice.entities.User;
 import com.goldenretriever.userservice.entities.requests.UpdatePasswordRequest;
 import com.goldenretriever.userservice.repositories.UserRepository;
@@ -18,9 +20,14 @@ public class UserController<T extends User> {
     private UserRepository userRepository;
 
 //    POST createUser
-    @PostMapping("/create")
-    public T createUser(@RequestBody T user) {
-        return (T) userService.saveNewUser(user);
+    @PostMapping("/create/retriever")
+    public ResponseEntity<String> createRetriever(@RequestBody Retriever retriever) {
+        return userService.saveNewUser(retriever);
+    }
+
+    @PostMapping("/create/artist")
+    public ResponseEntity<String> createRetriever(@RequestBody Artist artist) {
+        return userService.saveNewUser(artist);
     }
 
 //    UPDATE user
@@ -32,14 +39,16 @@ public class UserController<T extends User> {
         return userService.updatePassword(pwReq);
     }
 //    GET user by id
-    @GetMapping("/")
-    public String get() {
-        return "Hi";
-    }
-//    DELETE user
-    @DeleteMapping("/deleteuser/{userId}")
-    public void deleteUser(@PathVariable("userId") String _userId) {
-//        userService.removeUser(_userId);
-        userRepository.deleteBy_UserId(_userId);
+//    @GetMapping("/{_userId}")
+//    public String getById(@PathVariable("_userId") String _userId) {
+//        return userRepository.findBy_userId(_userId).toString();
+//    }
+
+    /*
+    Need to move _userId out of exposed path variable
+     */
+    @DeleteMapping("/delete/{_userId}")
+    public void deleteUser(@PathVariable("_userId") String _userId) {
+        userRepository.deleteById(_userId);
     }
 }

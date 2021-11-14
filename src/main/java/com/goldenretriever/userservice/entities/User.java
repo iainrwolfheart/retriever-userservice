@@ -1,6 +1,5 @@
 package com.goldenretriever.userservice.entities;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.bson.types.ObjectId;
@@ -11,7 +10,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 
 @Document(collection = "users")
-@AllArgsConstructor
 @NoArgsConstructor
 @Data
 public class User {

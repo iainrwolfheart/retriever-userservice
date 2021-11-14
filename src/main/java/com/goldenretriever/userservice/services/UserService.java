@@ -17,13 +17,19 @@ public class UserService<T extends User> {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    public T saveNewUser(T user) {
+    public ResponseEntity<String> saveNewUser(T user) {
 
 //        Check user !exists!!
+        if (!userRepository.userExists(user.getUsername(), user.getEmail())) {
+            String encodedPassword = passwordEncoder.encode(user.getPassword());
+            user.setPassword(encodedPassword);
+            userRepository.save(user);
+            return ResponseEntity.status(HttpStatus.CREATED).body("New user successfully created.");
+        } else {
+//            Doesn't tell you whether conflict was with email or username...
+            return ResponseEntity.status(HttpStatus.CONFLICT).body("User already exists");
+        }
 
-        String encodedPassword = passwordEncoder.encode(user.getPassword());
-        user.setPassword(encodedPassword);
-        return userRepository.save(user);
     }
 
     public ResponseEntity<String> updatePassword(UpdatePasswordRequest pwReq) {
