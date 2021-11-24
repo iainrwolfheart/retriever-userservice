@@ -12,19 +12,22 @@ import org.springframework.stereotype.Service;
 @Service
 public class UserService<T extends User> {
 
+    private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
+
     @Autowired
-    private UserRepository userRepository;
-    @Autowired
-    private PasswordEncoder passwordEncoder;
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
+        this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
+    }
 
     public ResponseEntity<String> saveNewUser(T user) {
 
-//        Check user !exists!!
         if (!userRepository.userExists(user.getUsername(), user.getEmail())) {
             String encodedPassword = passwordEncoder.encode(user.getPassword());
             user.setPassword(encodedPassword);
             userRepository.save(user);
-            return ResponseEntity.status(HttpStatus.CREATED).body("New user successfully created.");
+            return ResponseEntity.status(HttpStatus.CREATED).body(user.toString());
         } else {
 //            Doesn't tell you whether conflict was with email or username...
             return ResponseEntity.status(HttpStatus.CONFLICT).body("User already exists");
@@ -50,4 +53,5 @@ public class UserService<T extends User> {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Email doesn't exist.");
         }
     }
+
 }

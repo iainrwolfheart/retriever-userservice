@@ -1,6 +1,8 @@
 package com.goldenretriever.userservice.entities;
 
-import lombok.*;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import org.json.JSONObject;
 import org.springframework.data.annotation.TypeAlias;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -20,4 +22,17 @@ public class Artist extends User {
         this._caseId = _caseId;
     }
 
+    @Override
+    public String toString() {
+        JSONObject artistDto = new JSONObject();
+        try {
+            artistDto.put("username", super.getUsername());
+            artistDto.put("artistName", this.artistName);
+            artistDto.put("_caseId", this._caseId);
+        } catch (NullPointerException npe) {
+            return npe.getMessage();
+        }
+
+        return artistDto.toString();
+    }
 }

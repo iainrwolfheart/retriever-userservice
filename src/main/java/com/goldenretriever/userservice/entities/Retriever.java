@@ -8,4 +8,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @TypeAlias("retriever")
 @Data
 public class Retriever extends User {
+    public Retriever(String username, String email, String password) {
+        super(username, email, password);
+    }
 }
